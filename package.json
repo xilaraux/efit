@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "flow-typed install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "flow-remove-types ./index.js",
-    "start": "nodemon ./dist/index.js",
-    "flow": "flow"
+    "build": "flow-remove-types ./server -d ./dist/ --all --pretty",
+    "start": "npm run build && nodemon ./dist/index.js",
+    "flow": "flow",
+    "check": "flow check ./server"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
   "devDependencies": {
     "flow-bin": "^0.78.0",
     "flow-remove-types": "^1.2.3",
+    "flow-typed": "^2.5.1",
     "nodemon": "^1.18.3"
   }
 }
