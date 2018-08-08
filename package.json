@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js"
+    "prestart": "flow-remove-types ./index.js",
+    "start": "nodemon ./dist/index.js",
+    "flow": "flow"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "flow-bin": "^0.78.0",
+    "flow-remove-types": "^1.2.3",
     "nodemon": "^1.18.3"
   }
 }
