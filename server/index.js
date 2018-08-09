@@ -1,6 +1,7 @@
 const url = require('url');
 const server = require('./server');
 const logger = require('./logger');
+const { server: { port } } = require('../config.json');
 
 server.listen('/', (req, res) => {
     res.end('root');
@@ -17,4 +18,5 @@ server.listen('/logger', (req, res) => {
     res.end(logger.read(module));
 });
 
-server.run(3000);
+console.log(`Server is running on the port ${port}.`);
+server.run(port);
