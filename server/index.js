@@ -1,6 +1,6 @@
-const url = require('url');
-const server = require('./server');
-const logger = require('./logger');
+import type { IServer } from './server';
+
+const server: IServer = require('./server');
 const { server: { port } } = require('../config.json');
 
 server.listen('/', (req, res) => {
@@ -11,11 +11,8 @@ server.listen('/main', (req, res) => {
     res.end('main');
 });
 
-server.listen('/logger', (req, res) => {
-    const URL = url.parse(req.url, true);
-    const module = URL.query.module;
-
-    res.end(logger.read(module));
+server.listen('/404', (req, res) => {
+    res.end('404');
 });
 
 console.log(`Server is running on the port ${port}.`);

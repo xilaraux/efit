@@ -1,25 +1,41 @@
-const url = require('url');
-const http = require('http');
-const logger = require('./logger').create('server');
+import typeof HTTP from 'http';
+import type { Server, IncomingMessage, ClientRequest } from 'http';
 
-class Server {
+const http: HTTP = require('http');
+
+type PathHandler = (req: IncomingMessage, res: ClientRequest) => void;
+
+export interface IServer {
+    server: Server;
+    path: { [path: string]: PathHandler };
+    run(port: number): void;
+    listen(path: string, handler: PathHandler): void;
+}
+
+const NOT_FOUND = '/404';
+
+class ServerImpl implements IServer {
+    path;
+    server;
+
     constructor() {
         this.path = {};
-        this.server = suppressEmit(new http.Server());
+        this.server = new http.Server();
     }
 
-    listen(path, handler) {
+    listen(path: string, handler: PathHandler) {
         this.path[path] = handler;
     }
 
-    run(port) {
+    run(port: number) {
         this.server.on('request', (req, res) => {
-            const currentURL = url.parse(req.url);
-            const currentPath = currentURL.pathname;
+            const currentPath = req.url;
             const handler = this.path[currentPath];
 
             if (handler) {
                 handler(req, res);
+            } else if (this.path[NOT_FOUND]) {
+                this.path[NOT_FOUND](req, res);
             }
         });
 
@@ -27,15 +43,4 @@ class Server {
     }
 }
 
-function suppressEmit(server) {
-    const emit = server.emit;
-
-    server.emit = function(event) {
-        logger(`${event} \t ${new Date()}`);
-        emit.apply(server, arguments);
-    };
-
-    return server;
-}
-
-module.exports = new Server();
+module.exports = new ServerImpl();
