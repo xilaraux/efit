@@ -5,3 +5,5 @@ Milestones:
 - ESLint
 - Flow vs TS
 - Unit testing
+- User metrics
+- CI/CD
