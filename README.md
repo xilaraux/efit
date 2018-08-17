@@ -4,6 +4,6 @@ node.js server from scratch
 Milestones:
 - ESLint
 - Flow vs TS
-- Unit testing
+- Unit testing(AVA)
 - User metrics
 - CI/CD
